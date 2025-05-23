@@ -41,6 +41,20 @@ Recipe App is an interactive web application that allows users to browse, search
 
 ---
 
+## 📜 How to Use this Repo
+
+1. **Clone the repo** or download the files:
+   ```bash
+   git clone https://github.com/RohithReddyGK/Recipe-App.git
+   ```
+
+2. **Open `index.html` in your browser**:
+   ```bash
+   double-click index.html
+   ```
+
+---
+
 ## Screenshots
 
 ### 1️⃣ Light Mode
