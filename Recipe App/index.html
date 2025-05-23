@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe App</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f4f4;
+            --text-color: #1f2937;
+            --card-bg: #fff;
+            --heading-color: #1d4ed8;
+            --title-color: #111827;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #111827;
+            --text-color: #f3f4f6;
+            --card-bg: #1f2937;
+            --heading-color: #93c5fd;
+            --title-color: aqua;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 50px;
+            margin-bottom: 10px;
+            color: var(--heading-color);
+        }
+
+        .header p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: darkgrey;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            width: 60%;
+            max-width: 400px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 3px solid var(--heading-color);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 10px;
+            font-family: "Georgia", serif;
+            text-align: justify;
+        }
+
+        .card-content h3 {
+            text-align: center;
+        }
+
+        .card h3 {
+            margin: 10px 0 5px;
+            color: var(--title-color);
+        }
+
+        .heart {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: gray;
+        }
+
+        .heart.favorited {
+            color: red;
+        }
+
+        .heart:hover {
+            color: red;
+        }
+
+        .favorites {
+            margin-top: 40px;
+        }
+
+        .favorites h2 {
+            margin-bottom: 10px;
+        }
+
+        .favorites-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .favorite-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: var(--card-bg, #fff);
+        }
+
+        .fav-card-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .fav-img {
+            width: 100px;
+            height: auto;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .favorite-card h4 {
+            margin: 0 0 0.3rem 0;
+        }
+
+        .favorite-card p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body data-theme="light">
+    <div class="theme-toggle" onClick="toggleTheme()">
+        <span class="material-icons" id="theme-icon">light_mode</span>
+    </div>
+
+    <div class="header">
+        <h1>Recipe App</h1>
+        <p>Search for a Recipe to filter it out</p>
+    </div>
+
+    <div class="search-bar">
+        <input type="search" id="search" placeholder="Search Recipes" onkeyup="filterRecipes()">
+    </div>
+
+    <div class="grid" id="recipeGrid">
+    </div>
+
+    <div class="favorites">
+        <h2>Favorites</h2>
+        <div class="favorites-list" id="favoritesList">
+        </div>
+    </div>
+
+    <script>
+        const recipes = [
+            { name: "Mysore Pak", desc: "A rich and crumbly Karnataka sweet made with gram flour, ghee, and sugar. Known for its melt-in-the-mouth texture.", img: "Images/First_Image.jpg", id: 1 },
+            { name: "Indian Chicken Curry", desc: "A rich and aromatic dish made with tender chicken pieces simmered in a spiced tomato-onion gravy. Perfect with rice or naan.", img: "Images/Second_Image.jpg", id: 2 },
+            { name: "Naan", desc: "A soft and fluffy Indian flatbread traditionally baked in a tandoor. Served warm, it's ideal for scooping up curry or enjoying on its own.", img: "Images/Third_Image.webp", id: 3 },
+            { name: "Red Lentil Curry", desc: "A wholesome and protein-packed curry made with red lentils (masoor dal), tomatoes, and fragrant spices. Light yet satisfying.", img: "Images/Fourth_Image.jpg", id: 4 },
+            { name: "Kheer (Rice Pudding)", desc: "A creamy Indian dessert made by simmering rice in milk with sugar, cardamom, and garnished with nuts and raisins.", img: "Images/Fifth_Image.jpg", id: 5 },
+            { name: "Chicken Makhani (Indian Butter Chicken)", desc: "A restaurant favorite made with grilled chicken in a buttery, creamy tomato sauce, lightly spiced for a rich and savory flavor.", img: "Images/Sixth_Image.webp", id: 6 },
+            { name: "Chana Masala (Savory Indian Chickpeas)", desc: "A spicy and tangy chickpea curry made with onions, tomatoes, and a special blend of North Indian spices.", img: "Images/Seventh_Image.jpg", id: 7 },
+            { name: "Indian Style Basmati Rice", desc: "Fluffy, long-grain basmati rice cooked with ghee and mild spices, making it a perfect side for any Indian curry.", img: "Images/Eight_Image.jpg", id: 8 },
+            { name: "Gulab Jamun", desc: "Soft, deep-fried milk solids dumplings soaked in rose-scented sugar syrup — a classic Indian festive dessert.", img: "Images/Nine_Image.webp", id: 9 },
+            { name: "Indian Tandoori Chicken", desc: "Chicken marinated in yogurt and spices, then roasted to smoky perfection in a tandoor or oven. Known for its vibrant red color.", img: "Images/Tenth_Image.jpg", id: 10 },
+            { name: "Vegetarian Korma", desc: "A mildly spiced curry with assorted vegetables cooked in a rich and creamy sauce made of yogurt, nuts, and coconut.", img: "Images/Eleventh_Image.webp", id: 11 },
+            { name: "Indian Chapati Bread", desc: "A staple unleavened flatbread made with whole wheat flour, cooked on a hot griddle. Light, soft, and perfect with any dish.", img: "Images/Twvelth_Image.webp", id: 12 },
+            { name: "Easy Garam Masala", desc: "A homemade spice mix made with ground cloves, cardamom, cinnamon, and more — the heart of many Indian recipes.", img: "Images/Thirteen_Image.webp", id: 13 },
+            { name: "Authentic Saag Paneer", desc: "Cubes of paneer cheese simmered in a thick spinach (saag) gravy, delicately spiced. A nutritious and delicious vegetarian dish.", img: "Images/Fourteen_Image.jpg", id: 14 },
+            { name: "Aloo Matar", desc: "A classic North Indian curry made with potatoes and green peas in a tomato-based gravy spiced with garam masala.", img: "Images/Fifteen_Image.jpg", id: 15 }
+        ];
+
+        let favorites = [];
+
+        function displayRecipes(list) {
+            const container = document.getElementById("recipeGrid");
+            container.classList.add("grid");
+            container.innerHTML = '';
+            list.forEach(recipe => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `
+                <span class="material-icons heart ${favorites.includes(recipe.id) ? 'favorited' : ''}">${favorites.includes(recipe.id) ? 'favorite' : 'favorite_border'}</span>
+                <img src="${recipe.img}" alt="${recipe.name}">
+                <div class="card-content">
+                    <h3>${recipe.name}</h3>
+                    <p>${recipe.desc}</p>
+                </div>`;
+                container.appendChild(card);
+
+                const heartIcon = card.querySelector('.heart');
+                heartIcon.addEventListener('click', () => toggleFavorite(recipe.id));
+            });
+        }
+
+        function toggleFavorite(id) {
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(fav => fav !== id);
+            }
+            else {
+                favorites.push(id);
+            }
+            displayRecipes(recipes);
+            displayFavorites();
+        }
+
+        function displayFavorites() {
+            const favContainer = document.getElementById("favoritesList");
+            favContainer.innerHTML = '';
+            recipes.filter(r => favorites.includes(r.id)).forEach(recipe => {
+                const card = document.createElement("div");
+                card.className = "favorite-card";
+                card.innerHTML = `
+                <div class="fav-card-content">
+                    <img src="${recipe.img}" alt="${recipe.name}" class="fav-img"/>
+                    <div>
+                        <h4>${recipe.name}</h4>
+                        <p>${recipe.desc}</p>
+                    </div>
+                </div>`;
+                favContainer.appendChild(card);
+            });
+        }
+
+        function filterRecipes() {
+            const term = document.getElementById("search").value.toLowerCase();
+            const filtered = recipes.filter(r => r.name.toLowerCase().includes(term));
+            displayRecipes(filtered);
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById("theme-icon");
+            const theme = body.getAttribute("data-theme");
+            if (theme === "light") {
+                body.setAttribute("data-theme", "dark");
+                icon.innerText = "dark_mode";
+            }
+            else {
+                body.setAttribute("data-theme", "light");
+                icon.innerText = "light_mode";
+            }
+        }
+
+        displayRecipes(recipes);
+    </script>
+
+</body>
+
+</html>
