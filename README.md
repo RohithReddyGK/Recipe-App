@@ -66,7 +66,7 @@ Recipe App is an interactive web application that allows users to browse, search
 ---
 
 ### Netlify Badge
-[![Netlify Status](https://api.netlify.com/api/v1/badges/5f5425c8-a6e7-4ca6-8512-3be05d940372/deploy-status)](https://app.netlify.com/projects/ai-fields-theme-toggle/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ff5b9500-ceac-4a4f-b050-19fb2f38419e/deploy-status)](https://app.netlify.com/projects/spice-shelf/deploys)
 
 ---
 
