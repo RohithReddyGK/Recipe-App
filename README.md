@@ -44,10 +44,10 @@ Recipe App is an interactive web application that allows users to browse, search
 ## Screenshots
 
 ### 1️⃣ Light Mode
-<img src="https://github.com/user-attachments/assets/3676351e-10ba-40ba-af26-ae015d066bad" alt="Light Mode" width="700" height="450"/>
+<img src="https://github.com/user-attachments/assets/3676351e-10ba-40ba-af26-ae015d066bad" alt="Light Mode" width="750" height="450"/>
 
 ### 2️⃣ Dark Mode
-<img src="https://github.com/user-attachments/assets/abbee598-7576-4a9c-b06c-e4ac23709b0e" alt="Dark Mode" width="700" height="450"/>
+<img src="https://github.com/user-attachments/assets/abbee598-7576-4a9c-b06c-e4ac23709b0e" alt="Dark Mode" width="750" height="450"/>
 
 ---
 
